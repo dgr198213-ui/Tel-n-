@@ -21,20 +21,20 @@ export default function Home() {
   );
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground animate-fade-in">
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-border/40 bg-background/80 backdrop-blur-sm">
+      <header className="sticky top-0 z-40 border-b border-border/40 bg-background/80 backdrop-blur-sm transition-smooth">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-6 h-6 text-accent" />
+            <Sparkles className="w-6 h-6 text-accent animate-pulse-glow" />
             <h1 className="text-xl font-bold">TELÓN</h1>
           </div>
 
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#artistas" className="text-sm hover:text-accent transition">
+            <a href="#artistas" className="text-sm hover:text-accent transition-smooth">
               Artistas
             </a>
-            <a href="#eventos" className="text-sm hover:text-accent transition">
+            <a href="#eventos" className="text-sm hover:text-accent transition-smooth">
               Eventos
             </a>
           </nav>
@@ -57,9 +57,9 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative py-20 md:py-32 overflow-hidden">
+      <section className="relative py-20 md:py-32 overflow-hidden animate-slide-up">
         {/* Stage lights background */}
-        <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0 opacity-30 animate-fade-in">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent/20 rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl"></div>
         </div>
@@ -160,14 +160,14 @@ export default function Home() {
               {eventosData.map((evento) => (
                 <Card
                   key={evento.id}
-                  className="group cursor-pointer hover:border-accent/50 transition overflow-hidden"
+                  className="group cursor-pointer hover:border-accent/50 transition-smooth overflow-hidden hover-lift"
                 >
                   {evento.fotoPrincipal && (
                     <div className="relative h-48 overflow-hidden bg-muted">
                       <img
                         src={evento.fotoPrincipal}
                         alt={evento.titulo}
-                        className="w-full h-full object-cover group-hover:scale-105 transition"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-smooth"
                       />
                     </div>
                   )}
