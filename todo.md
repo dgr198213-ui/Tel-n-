@@ -48,9 +48,9 @@
 ## Fase 6: Publicación de Eventos (Frictionless)
 
 - [x] Crear formulario de publicación de evento (/eventos/publicar)
-- [ ] Integrar Cloudflare Turnstile para anti-spam (opcional)
-- [ ] Implementar edición anónima con token (/eventos/editar/:token) (opcional)
-- [ ] Sistema de moderación de eventos (opcional)
+- [ ] Integrar Cloudflare Turnstile para anti-spam (opcional - implementación futura)
+- [ ] Implementar edición anónima con token (/eventos/editar/:token) (opcional - implementación futura)
+- [ ] Sistema de moderación de eventos (opcional - implementación futura)
 
 ## Fase 7: Pulido Visual y Animaciones
 
