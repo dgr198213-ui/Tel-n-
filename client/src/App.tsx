@@ -1,54 +1,61 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { SplashScreen } from "./components/SplashScreen";
-import Home from "./pages/Home";
+import { Skeleton } from "./components/ui/skeleton";
 
-import Artistas from "./pages/Artistas";
-import Eventos from "./pages/Eventos";
-import Suscripcion from "./pages/Suscripcion";
-import ArtistaPublico from "./pages/ArtistaPublico";
-import EventoDetalle from "./pages/EventoDetalle";
-import PerfilArtista from "./pages/PerfilArtista";
-import PublicarEvento from "./pages/PublicarEvento";
+// Lazy load pages for better performance
+const Home = lazy(() => import("./pages/Home"));
+const Artistas = lazy(() => import("./pages/Artistas"));
+const Eventos = lazy(() => import("./pages/Eventos"));
+const Suscripcion = lazy(() => import("./pages/Suscripcion"));
+const ArtistaPublico = lazy(() => import("./pages/ArtistaPublico"));
+const EventoDetalle = lazy(() => import("./pages/EventoDetalle"));
+const PerfilArtista = lazy(() => import("./pages/PerfilArtista"));
+const PublicarEvento = lazy(() => import("./pages/PublicarEvento"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
-function Router() {
-  // make sure to consider if you need authentication for certain routes
+function PageLoader() {
   return (
-    <Switch>
-      <Route path={"/ "} component={Home} />
-      <Route path={"/artistas"} component={Artistas} />
-      <Route path={"/artistas/:slug"} component={ArtistaPublico} />
-      <Route path={"/eventos"} component={Eventos} />
-      <Route path={"/eventos/:id"} component={EventoDetalle} />
-      <Route path={"/eventos/publicar"} component={PublicarEvento} />
-      <Route path={"/suscripcion"} component={Suscripcion} />
-      <Route path={"/perfil"} component={PerfilArtista} />
-      <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
-      <Route component={NotFound} />
-    </Switch>
+    <div className="flex flex-col space-y-3 p-8">
+      <Skeleton className="h-[125px] w-full rounded-xl" />
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-[200px]" />
+      </div>
+    </div>
   );
 }
 
-// NOTE: About Theme
-// - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
-//   to keep consistent foreground/background color across components
-// - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
+function Router() {
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/artistas" component={Artistas} />
+        <Route path="/artistas/:slug" component={ArtistaPublico} />
+        <Route path="/eventos" component={Eventos} />
+        <Route path="/eventos/:id" component={EventoDetalle} />
+        <Route path="/eventos/publicar" component={PublicarEvento} />
+        <Route path="/suscripcion" component={Suscripcion} />
+        <Route path="/perfil" component={PerfilArtista} />
+        <Route path="/404" component={NotFound} />
+        {/* Final fallback route */}
+        <Route component={NotFound} />
+      </Switch>
+    </Suspense>
+  );
+}
 
 function App() {
   const [splashComplete, setSplashComplete] = React.useState(false);
 
   return (
     <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="dark"
-        // switchable
-      >
+      <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
           <Toaster />
           {!splashComplete && <SplashScreen onComplete={() => setSplashComplete(true)} />}

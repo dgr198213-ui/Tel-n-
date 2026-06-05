@@ -2,11 +2,14 @@ import type { CreateExpressContextOptions } from "@trpc/server/adapters/express"
 import type { User } from "../../drizzle/schema";
 import * as db from "../db";
 import { createClient } from "@supabase/supabase-js";
+import { SupabaseAuthAdapter } from "./auth/supabase-auth.adapter";
 
 const supabase = createClient(
   process.env.SUPABASE_URL || "",
   process.env.SUPABASE_SERVICE_ROLE_KEY || ""
 );
+
+const authGateway = new SupabaseAuthAdapter(supabase);
 
 export type TrpcContext = {
   req: CreateExpressContextOptions["req"];
@@ -22,25 +25,21 @@ export async function createContext(
   const authHeader = opts.req.headers.authorization;
   if (authHeader && authHeader.startsWith("Bearer ")) {
     const token = authHeader.split(" ")[1];
-    try {
-      const { data: { user: sbUser }, error } = await supabase.auth.getUser(token);
-      
-      if (sbUser && !error) {
-        // Sync with local users table
-        let localUser = await db.getUserByOpenId(sbUser.id);
-        if (!localUser) {
-          await db.upsertUser({
-            openId: sbUser.id,
-            email: sbUser.email,
-            name: sbUser.user_metadata?.full_name || sbUser.email?.split("@")[0],
-            loginMethod: sbUser.app_metadata?.provider || "email",
-          });
-          localUser = await db.getUserByOpenId(sbUser.id);
-        }
-        user = localUser || null;
+    const authUser = await authGateway.verifyToken(token);
+    
+    if (authUser) {
+      // Sync with local users table
+      let localUser = await db.getUserByOpenId(authUser.id);
+      if (!localUser) {
+        await db.upsertUser({
+          openId: authUser.id,
+          email: authUser.email,
+          name: authUser.name,
+          loginMethod: authUser.provider,
+        });
+        localUser = await db.getUserByOpenId(authUser.id);
       }
-    } catch (error) {
-      console.error("[Auth] Supabase verification failed", error);
+      user = localUser || null;
     }
   }
 
