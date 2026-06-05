@@ -14,6 +14,7 @@ import Suscripcion from "./pages/Suscripcion";
 import ArtistaPublico from "./pages/ArtistaPublico";
 import EventoDetalle from "./pages/EventoDetalle";
 import PerfilArtista from "./pages/PerfilArtista";
+import PublicarEvento from "./pages/PublicarEvento";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -24,6 +25,7 @@ function Router() {
       <Route path={"/artistas/:slug"} component={ArtistaPublico} />
       <Route path={"/eventos"} component={Eventos} />
       <Route path={"/eventos/:id"} component={EventoDetalle} />
+      <Route path={"/eventos/publicar"} component={PublicarEvento} />
       <Route path={"/suscripcion"} component={Suscripcion} />
       <Route path={"/perfil"} component={PerfilArtista} />
       <Route path={"/404"} component={NotFound} />

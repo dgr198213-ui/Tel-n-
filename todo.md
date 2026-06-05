@@ -47,7 +47,7 @@
 
 ## Fase 6: Publicación de Eventos (Frictionless)
 
-- [ ] Crear formulario de publicación de evento (/eventos/publicar)
+- [x] Crear formulario de publicación de evento (/eventos/publicar)
 - [ ] Integrar Cloudflare Turnstile para anti-spam
 - [ ] Implementar edición anónima con token (/eventos/editar/:token)
 - [ ] Sistema de moderación de eventos
@@ -94,8 +94,8 @@
 
 ## Testing y Validación
 
-- [ ] Tests unitarios con Vitest
-- [ ] Tests de integración para tRPC procedures
+- [x] Tests unitarios con Vitest (23 tests pasando)
+- [x] Tests de integración para tRPC procedures
 - [ ] Validación de flujos de pago
 - [ ] Testing de permisos por plan
 - [ ] Testing de responsive design
