@@ -24,10 +24,10 @@
 
 ## Fase 3: Capa Pública - Home y Directorios
 
-- [ ] Implementar Home con hero section y búsqueda bifuncional
+- [x] Implementar Home con hero section y búsqueda bifuncional
 - [ ] Implementar módulo VIP de artistas premium
-- [ ] Crear directorio de artistas (/artistas)
-- [ ] Crear directorio de eventos (/eventos)
+- [x] Crear directorio de artistas (/artistas)
+- [x] Crear directorio de eventos (/eventos)
 - [ ] Implementar filtros de búsqueda (ubicación, fecha, disciplina)
 
 ## Fase 4: Perfiles Públicos
@@ -39,11 +39,11 @@
 
 ## Fase 5: Integración Stripe
 
-- [ ] Configurar Stripe Billing
-- [ ] Implementar Stripe Checkout
+- [x] Configurar Stripe Billing
+- [x] Implementar Stripe Checkout
 - [ ] Implementar Stripe Customer Portal
 - [ ] Crear Edge Function para webhooks de Stripe
-- [ ] Sincronizar plan_status con webhooks
+- [x] Sincronizar plan_status con webhooks
 
 ## Fase 6: Publicación de Eventos (Frictionless)
 
