@@ -18,9 +18,9 @@
 - [ ] Implementar página de login (/auth/login)
 - [ ] Implementar página de registro (/auth/registro)
 - [ ] Crear dashboard inicio (/dashboard)
-- [ ] Crear editor de perfil (/dashboard/perfil)
-- [ ] Crear página de suscripción (/dashboard/suscripcion)
-- [ ] Implementar lógica de permisos por plan (Free, Estándar, Premium)
+- [x] Crear editor de perfil (/perfil)
+- [x] Crear página de suscripción (/suscripcion)
+- [x] Implementar lógica de permisos por plan (Free, Estándar, Premium)
 
 ## Fase 3: Capa Pública - Home y Directorios
 
@@ -32,9 +32,9 @@
 
 ## Fase 4: Perfiles Públicos
 
-- [ ] Implementar perfil público de artista (/artistas/:slug)
-- [ ] Renderizado dinámico según plan (free, estandar, premium)
-- [ ] Implementar ficha de evento (/eventos/:id-evento)
+- [x] Implementar perfil público de artista (/artistas/:slug)
+- [x] Renderizado dinámico según plan (free, estandar, premium)
+- [x] Implementar ficha de evento (/eventos/:id-evento)
 - [ ] Lazy loading de vídeos y optimización de imágenes
 
 ## Fase 5: Integración Stripe
