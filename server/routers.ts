@@ -16,12 +16,9 @@ export const appRouter = router({
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
-    logout: publicProcedure.mutation(({ ctx }) => {
-      const cookieOptions = getSessionCookieOptions(ctx.req);
-      ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
-      return {
-        success: true,
-      } as const;
+    // Logout is handled client-side with Supabase, but we keep the endpoint for compatibility
+    logout: publicProcedure.mutation(() => {
+      return { success: true } as const;
     }),
   }),
 
