@@ -9,7 +9,7 @@ const mockUser = {
   openId: "test-user-123",
   email: "test@example.com",
   name: "Test Artist",
-  loginMethod: "manus",
+  loginMethod: "google",
   role: "user" as const,
   createdAt: new Date(),
   updatedAt: new Date(),
