@@ -1,9 +1,11 @@
+import React from 'react';
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { SplashScreen } from "./components/SplashScreen";
 import Home from "./pages/Home";
 
 function Router() {
@@ -24,15 +26,18 @@ function Router() {
 // - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
 
 function App() {
+  const [splashComplete, setSplashComplete] = React.useState(false);
+
   return (
     <ErrorBoundary>
       <ThemeProvider
-        defaultTheme="light"
+        defaultTheme="dark"
         // switchable
       >
         <TooltipProvider>
           <Toaster />
-          <Router />
+          {!splashComplete && <SplashScreen onComplete={() => setSplashComplete(true)} />}
+          {splashComplete && <Router />}
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

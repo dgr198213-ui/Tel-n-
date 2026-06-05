@@ -1,125 +1,109 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+
+
+/* TELÓN Cyber-Minimalist Design System */
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --radius-sm: 0.0625rem;
+  --radius-md: 0.125rem;
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.375rem;
+  
+  /* Primary Colors - Electric Blue */
+  --color-primary: #adc6ff;
+  --color-primary-foreground: #002e6a;
+  --color-primary-container: #4d8eff;
+  --color-primary-fixed: #d8e2ff;
+  
+  /* Secondary Colors - Technical Gray */
+  --color-secondary: #c6c6c7;
+  --color-secondary-foreground: #2f3131;
+  --color-secondary-container: #454747;
+  --color-secondary-fixed: #e2e2e2;
+  
+  /* Accent Colors - Warm Orange */
+  --color-accent: #ffb786;
+  --color-accent-foreground: #502400;
+  --color-accent-container: #df7412;
+  
+  /* Destructive Colors - Error Red */
+  --color-destructive: #ffb4ab;
+  --color-destructive-foreground: #690005;
+  
+  /* Surface Colors - Dark Mode */
+  --color-background: #131317;
+  --color-foreground: #e4e1e7;
+  --color-card: #1f1f23;
+  --color-card-foreground: #e4e1e7;
+  --color-popover: #1b1b1f;
+  --color-popover-foreground: #e4e1e7;
+  --color-muted: #353439;
+  --color-muted-foreground: #c2c6d6;
+  --color-border: #424754;
+  --color-input: #1b1b1f;
+  --color-ring: #adc6ff;
+  
+  /* Sidebar */
+  --color-sidebar: #131317;
+  --color-sidebar-foreground: #e4e1e7;
+  --color-sidebar-primary: #adc6ff;
+  --color-sidebar-primary-foreground: #002e6a;
+  --color-sidebar-accent: #ffb786;
+  --color-sidebar-accent-foreground: #502400;
+  --color-sidebar-border: #424754;
+  --color-sidebar-ring: #adc6ff;
+  
+  /* Chart Colors */
+  --color-chart-1: #adc6ff;
+  --color-chart-2: #ffb786;
+  --color-chart-3: #c6c6c7;
+  --color-chart-4: #4d8eff;
+  --color-chart-5: #df7412;
 }
 
 :root {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-600);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --radius: 0.65rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.235 0.015 65);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.235 0.015 65);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.235 0.015 65);
-  --secondary: oklch(0.98 0.001 286.375);
-  --secondary-foreground: oklch(0.4 0.015 65);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.141 0.005 285.823);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.623 0.214 259.815);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.235 0.015 65);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.623 0.214 259.815);
+  --radius: 0.125rem;
 }
 
 .dark {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-500);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.85 0.005 65);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.85 0.005 65);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.85 0.005 65);
-  --secondary: oklch(0.24 0.006 286.033);
-  --secondary-foreground: oklch(0.7 0.005 65);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground:  oklch(0.92 0.005 65);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.488 0.243 264.376);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.85 0.005 65);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground:  oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.488 0.243 264.376);
+  color-scheme: dark;
+  --background: #131317;
+  --foreground: #e4e1e7;
+  --card: #1f1f23;
+  --card-foreground: #e4e1e7;
+  --popover: #1b1b1f;
+  --popover-foreground: #e4e1e7;
+  --primary: #adc6ff;
+  --primary-foreground: #002e6a;
+  --secondary: #c6c6c7;
+  --secondary-foreground: #2f3131;
+  --muted: #353439;
+  --muted-foreground: #c2c6d6;
+  --accent: #ffb786;
+  --accent-foreground: #502400;
+  --destructive: #ffb4ab;
+  --destructive-foreground: #690005;
+  --border: #424754;
+  --input: #1b1b1f;
+  --ring: #adc6ff;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
+  
+  html {
+    color-scheme: dark;
   }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rounding" 1;
+  }
+  
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
   [type="button"]:not(:disabled),
@@ -134,24 +118,40 @@
 }
 
 @layer components {
-  /**
-   * Custom container utility that centers content and adds responsive padding.
-   *
-   * This overrides Tailwind's default container behavior to:
-   * - Auto-center content (mx-auto)
-   * - Add responsive horizontal padding
-   * - Set max-width for large screens
-   *
-   * Usage: <div className="container">...</div>
-   *
-   * For custom widths, use max-w-* utilities directly:
-   * <div className="max-w-6xl mx-auto px-4">...</div>
-   */
+  /* Tech Border Utility - 1px outline for UI elements */
+  .tech-border {
+    @apply border border-border;
+  }
+
+  /* Tech Inset Shadow - Inset border for pressed state */
+  .tech-inset {
+    box-shadow: inset 0 0 0 1px var(--border);
+  }
+
+  /* Glow Primary Effect - Subtle glow for active states */
+  .glow-primary {
+    box-shadow: 0 0 12px -2px rgba(173, 198, 255, 0.4);
+  }
+
+  /* Text Glow Effect - Subtle text shadow */
+  .text-glow {
+    text-shadow: 0 0 8px rgba(173, 198, 255, 0.5);
+  }
+
+  /* Stage Lights Background - Dynamic background with light rays */
+  .stage-lights {
+    background:
+      radial-gradient(circle at 30% 0%, rgba(77, 142, 255, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 70% 0%, rgba(223, 116, 18, 0.1) 0%, transparent 50%),
+      linear-gradient(180deg, transparent 0%, var(--background) 100%);
+  }
+
+  /* Container - Centered with responsive padding */
   .container {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 1rem; /* 16px - mobile padding */
+    padding-left: 1rem;
     padding-right: 1rem;
   }
 
@@ -162,16 +162,52 @@
 
   @media (min-width: 640px) {
     .container {
-      padding-left: 1.5rem; /* 24px - tablet padding */
+      padding-left: 1.5rem;
       padding-right: 1.5rem;
     }
   }
 
   @media (min-width: 1024px) {
     .container {
-      padding-left: 2rem; /* 32px - desktop padding */
+      padding-left: 2rem;
       padding-right: 2rem;
-      max-width: 1280px; /* Standard content width */
+      max-width: 1280px;
     }
+  }
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--radius);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+
+/* Selection Styling */
+::selection {
+  @apply bg-primary text-primary-foreground;
+}
+
+/* Focus Visible Styling */
+:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
+}
+
+/* Smooth transitions for interactive elements */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    @apply transition-colors duration-200;
   }
 }
