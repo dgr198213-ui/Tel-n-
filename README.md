@@ -1,6 +1,6 @@
 # TELÓN - Plataforma para Artistas y Eventos
 
-TELÓN es una plataforma integral diseñada para conectar a artistas con su audiencia y facilitar la publicación y gestión de eventos culturales. Esta versión de la plataforma ha sido migrada a una infraestructura propia para garantizar total autonomía y escalabilidad.
+TELÓN es una plataforma integral diseñada para conectar a artistas con su audiencia y facilitar la publicación y gestión de eventos culturales. Esta versión de la plataforma utiliza una arquitectura limpia y modular para garantizar escalabilidad y mantenibilidad.
 
 ---
 
@@ -8,32 +8,42 @@ TELÓN es una plataforma integral diseñada para conectar a artistas con su audi
 
 La plataforma utiliza un stack moderno y eficiente:
 
-- **Frontend:** React 19 + Vite + Tailwind CSS 4
+- **Frontend:** React 19 + Vite + Tailwind CSS 4 + wouter
 - **Backend:** Node.js + Express 4 + tRPC 11
 - **Base de Datos:** PostgreSQL (alojado en Supabase)
 - **ORM:** Drizzle ORM
-- **Autenticación:** Supabase Auth
+- **Autenticación:** Supabase Auth (Sistema Unificado)
 - **Almacenamiento:** Supabase Storage
 - **Pagos:** Stripe (Suscripciones y Checkouts)
-- **Despliegue:** Preparado para Vercel
+- **Despliegue:** Optimizado para Vercel / Fly.io
 
 ---
 
 ## 🛠️ Arquitectura y Flujo de Desarrollo
 
-### 1. tRPC-First
-Toda la comunicación entre el cliente y el servidor se realiza a través de tRPC. Los procedimientos se definen en `server/routers.ts` y se consumen en el frontend mediante hooks de `trpc.*`. Esto garantiza tipos de extremo a extremo y una experiencia de desarrollo fluida.
+### 1. tRPC Modular
+Toda la comunicación entre el cliente y el servidor se realiza a través de tRPC. A diferencia de versiones anteriores, los procedimientos están organizados por dominios en `server/routers/`:
+- `artista.router.ts`: Gestión de perfiles, búsqueda y límites de plan.
+- `evento.router.ts`: CRUD de eventos y listados públicos.
+- `stripe.router.ts`: Creación de sesiones de checkout.
+- `systemRouter.ts`: Procedimientos de salud del sistema.
 
-### 2. Autenticación con Supabase
-La autenticación se gestiona íntegramente a través de Supabase Auth. El hook `useAuth()` en el cliente proporciona el estado del usuario, mientras que el servidor valida los tokens JWT en cada petición tRPC para poblar el contexto (`ctx.user`).
+El archivo `server/routers.ts` actúa como el punto de entrada que combina todos los sub-routers.
 
-### 3. Base de Datos y Esquema
-El esquema se define en `drizzle/schema.ts` utilizando PostgreSQL.
-- Para generar cambios: `npx drizzle-kit generate`
-- Para aplicar cambios: `npx drizzle-kit migrate` (requiere `DATABASE_URL`)
+### 2. Capa de Casos de Uso (Clean Architecture)
+Para separar la lógica de negocio de los protocolos de transporte, se ha introducido una capa de **Use Cases** en `server/use-cases/`. Esto permite:
+- Validar reglas de negocio (ej. límites de fotos según el plan) de forma aislada.
+- Facilitar el testing unitario de la lógica de dominio.
+- Mantener los routers limpios y enfocados solo en la entrada/salida.
 
-### 4. Almacenamiento Multimedia
-Las imágenes y archivos se gestionan a través de Supabase Storage. El servidor proporciona helpers en `server/storage.ts` para subir archivos (`storagePut`) y obtener URLs públicas o firmadas.
+### 3. Autenticación Unificada
+La autenticación se gestiona exclusivamente a través de **Supabase Auth**. 
+- **Adaptadores:** Se utiliza un `AuthGateway` (`server/_core/auth/`) para desacoplar la implementación de Supabase de la lógica del servidor.
+- **Contexto:** El servidor valida los tokens JWT en cada petición para poblar el contexto (`ctx.user`) y sincroniza automáticamente los datos con la tabla de usuarios local.
+
+### 4. Optimización de Frontend
+- **Code Splitting:** Se utiliza `React.lazy()` y `Suspense` para cargar las páginas bajo demanda, mejorando drásticamente el tiempo de carga inicial.
+- **Validación con Zod:** Tipado estricto de extremo a extremo desde el esquema de base de datos hasta los formularios del frontend.
 
 ---
 
@@ -45,58 +55,36 @@ client/
     _core/hooks/  ← Hooks globales (useAuth, etc.)
     components/   ← Componentes UI (shadcn/ui) y Mapas
     lib/          ← Clientes de Supabase y tRPC
-    pages/        ← Páginas de la aplicación (Artistas, Eventos, Perfil, etc.)
-    App.tsx       ← Enrutamiento con wouter
-    main.tsx      ← Punto de entrada y proveedores
+    pages/        ← Páginas con Lazy Loading
+    App.tsx       ← Enrutamiento y Suspense
 drizzle/          ← Esquema de base de datos y migraciones
 server/
-  _core/          ← Infraestructura del servidor (tRPC context, env, security)
-  db.ts           ← Helpers de acceso a base de datos
-  routers.ts      ← Definición de procedimientos tRPC
-  stripe.ts       ← Integración y webhooks de Stripe
+  _core/          ← Infraestructura (Auth Adapters, tRPC context, env)
+  routers/        ← Routers tRPC divididos por dominio
+  use-cases/      ← Lógica de negocio y repositorios (Clean Architecture)
+  db.ts           ← Acceso a datos con Drizzle
+  stripe.ts       ← Lógica de integración con Stripe
   storage.ts      ← Gestión de archivos con Supabase
 shared/           ← Tipos y constantes compartidas
 ```
 
 ---
 
-## 🔐 Variables de Entorno Necesarias
+## 🔐 Variables de Entorno
 
-Para que la plataforma funcione correctamente, se deben configurar las siguientes variables:
+Consulta el archivo `.env.example` para ver la lista completa de variables necesarias para el desarrollo y despliegue.
 
-### Backend
-- `DATABASE_URL`: URL de conexión a PostgreSQL.
-- `SUPABASE_URL`: URL de tu proyecto Supabase.
-- `SUPABASE_SERVICE_ROLE_KEY`: Clave secreta para operaciones administrativas del servidor.
-- `STRIPE_SECRET_KEY`: Clave secreta de Stripe.
-- `STRIPE_WEBHOOK_SECRET`: Secreto para validar firmas de webhooks de Stripe.
-- `JWT_SECRET`: Secreto para firma de cookies locales (si aplica).
-
-### Frontend (Vite)
-- `VITE_SUPABASE_URL`: URL pública de Supabase.
-- `VITE_SUPABASE_ANON_KEY`: Clave pública anónima de Supabase.
-- `VITE_GOOGLE_MAPS_API_KEY`: Clave de API para Google Maps.
-
----
-
-## 💳 Integración de Stripe
-
-La plataforma incluye un flujo completo de suscripciones para artistas (Planes: Free, Estándar, Premium).
-- **Webhooks:** El endpoint `/api/stripe/webhook` procesa eventos como `checkout.session.completed`, `invoice.payment_succeeded` y `customer.subscription.deleted` para actualizar automáticamente el estatus del artista en la base de datos.
-
----
-
-## 🛡️ Seguridad
-
-- **Helmet:** Configurado para establecer cabeceras de seguridad HTTP y Content Security Policy (CSP).
-- **Rate Limiting:** Implementado para proteger los endpoints de la API contra abusos.
-- **Validación:** Uso intensivo de `zod` para validar todas las entradas de la API.
+### Principales:
+- `DATABASE_URL`: Conexión a PostgreSQL.
+- `SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY`: Configuración de Supabase.
+- `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET`: Integración de pagos.
+- `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY`: Configuración cliente Supabase.
 
 ---
 
 ## 📦 Despliegue
 
-La plataforma está optimizada para ser desplegada en **Vercel**.
-1. Conecta tu repositorio de GitHub a Vercel.
-2. Configura las variables de entorno mencionadas anteriormente.
+La plataforma está optimizada para ser desplegada en **Vercel**:
+1. Conecta tu repositorio de GitHub.
+2. Configura las variables de entorno.
 3. El comando de build es `pnpm build` y el directorio de salida es `dist`.
